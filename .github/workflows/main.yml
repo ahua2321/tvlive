@@ -1,0 +1,38 @@
+name: zb
+
+on:
+  schedule:
+    - cron: '30 21,2,8 * * *'
+      branches:
+        - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+    
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+          
+      - name: Install requests
+        run: pip3 install requests     
+      - name: Install datetime
+        run: pip install datetime
+
+      - name: Run IPTV
+        run: python ${{ github.workspace }}/ipzb.py
+        
+      - name: 提交更改
+        run: |
+          git config --local user.email "ahua2321@github.com"
+          git config --local user.name "ahua"
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -am "Automatic update"
+            git push
+            else
+              echo "No changes detected, skipping commit."
+            fi
