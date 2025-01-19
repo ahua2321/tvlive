@@ -2,7 +2,7 @@ name: zb
 
 on:
   schedule:
-    - cron: '0 20 * * 0'
+    - cron: '0 20 * * *'
       branches:
         - main
 jobs:
